@@ -7,8 +7,10 @@
 
 import Foundation
 
-struct OnboardingEntity {
+struct OnboardingEntity: Identifiable {
+    let id = UUID()
     let title: String
-    let subtitle: String?
-    let image: String?
+    let subtitle: String
+    let imageName: String
+    let buttonTitle: String
 }
