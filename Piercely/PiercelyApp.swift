@@ -11,7 +11,6 @@ import SwiftUI
 struct PiercelyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
         }
     }
 }
