@@ -13,8 +13,8 @@ struct OnboardingScreenView<ViewModel: OnboardingScreenViewModel>: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-            
+            Color(UIColor(red: 31/255, green: 33/255, blue: 37/255, alpha: 1)).ignoresSafeArea()
+
             TabView(selection: $viewModel.currentPage) {
                 ForEach(Array(viewModel.pages.enumerated()), id: \.element.id) { index, page in
                     OnboardingPageView(
@@ -31,8 +31,8 @@ struct OnboardingScreenView<ViewModel: OnboardingScreenViewModel>: View {
                 HStack(spacing: 8) {
                     ForEach(0..<viewModel.pages.count, id: \.self) { index in
                         Capsule()
-                            .fill(index == viewModel.currentPage ? Color.white : Color.gray)
-                            .frame(width: index == viewModel.currentPage ? 40 : 8, height: 8)
+                            .fill(index == viewModel.currentPage ? Color.white : Color(uiColor: UIColor(red: 64/255, green: 64/255, blue: 64/255, alpha: 1)))
+                            .frame(width: index == viewModel.currentPage ? 110 : 100, height: 3)
                             .animation(.easeInOut, value: viewModel.currentPage)
                     }
                 }

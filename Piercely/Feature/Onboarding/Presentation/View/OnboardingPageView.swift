@@ -19,7 +19,6 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
             Spacer()
                 .frame(height: 120)
             
-            // Headline
             Text(page.title)
                 .font(.system(size: 48, weight: .semibold))
                 .foregroundColor(.white)
@@ -30,7 +29,13 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
             if !page.subtitle.isEmpty {
                 Text(page.subtitle)
                     .font(.system(size: 24))
-                    .foregroundColor(Color(red: 162, green: 162, blue: 162))
+                    .foregroundColor(
+                        Color(
+                            red: 162 / 255.0,
+                            green: 162 / 255.0,
+                            blue: 162 / 255.0
+                        )
+                    )
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 32)
@@ -39,7 +44,6 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
             
             Spacer()
             
-            // Изображение
             Image(page.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -48,13 +52,12 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
             
             Spacer()
             
-            // Кнопка
             Button {
                 Task {
                     await viewModel.completeOnboarding()
                 }
             } label: {
-                Text("Get Started")
+                Text(page.buttonTitle)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)

@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 protocol OnboardingScreenViewModel: ObservableObject {
     var currentPage: Int { get set }
     var pages: [OnboardingEntity] { get set }
@@ -43,13 +44,12 @@ final class OnboardingScreenViewModelImpl {
             subtitle: "Get opinions before you commit",
             imageName: "thirdOnboardingImage",
             buttonTitle: "Let's Go"
-        )
+        ),
     ]
 }
 
 extension OnboardingScreenViewModelImpl: OnboardingScreenViewModel {
     func completeOnboarding() async {
-        // Сохраняем, что онбординг пройден
         UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
         shouldShowMainApp = true
     }

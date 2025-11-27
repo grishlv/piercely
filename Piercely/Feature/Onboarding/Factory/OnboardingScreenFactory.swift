@@ -11,7 +11,7 @@ final class OnboardingScreenFactory {
 }
 
 extension OnboardingScreenFactory {
-    func makeOnboardingScreenViewModel() -> some OnboardingScreenViewModelImpl {
+    func makeOnboardingScreenViewModel() -> OnboardingScreenViewModelImpl {
         OnboardingScreenViewModelImpl()
     }
 }

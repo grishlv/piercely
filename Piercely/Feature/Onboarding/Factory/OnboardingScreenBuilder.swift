@@ -12,14 +12,14 @@ final class OnboardingScreenBuilder {
     private let screenFactory: OnboardingScreenFactory
     
     // MARK: Life cycle
-    init(screenFactory: OnboardingScreenFactory) {
+    init(screenFactory: OnboardingScreenFactory = OnboardingScreenFactory()) {
         self.screenFactory = screenFactory
     }
 }
 
 // MARK: - Public methods
 extension OnboardingScreenBuilder {
-    func buildView() -> any View {
+    func buildView() -> some View {
         let viewModel = screenFactory.makeOnboardingScreenViewModel()
 
         let view = OnboardingScreenView(viewModel: viewModel)
