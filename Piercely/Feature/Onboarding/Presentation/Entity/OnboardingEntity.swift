@@ -10,7 +10,9 @@ import Foundation
 struct OnboardingEntity: Identifiable {
     let id = UUID()
     let title: String
+    let titleAccent: String?
     let subtitle: String
     let imageName: String
     let buttonTitle: String
+    let onboardingAccentLine: String?
 }

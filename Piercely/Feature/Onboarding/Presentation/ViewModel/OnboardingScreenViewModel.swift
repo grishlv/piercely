@@ -28,25 +28,30 @@ final class OnboardingScreenViewModelImpl {
     
     var pages: [OnboardingEntity] = [
         OnboardingEntity(
-            title: "Try on\npiercings\nin 30 seconds",
+            title: "Try on\npiercings",
+            titleAccent: "\nin 30 seconds",
             subtitle: "",
             imageName: "firstOnboardingImage",
-            buttonTitle: "Get Started"
+            buttonTitle: "Get Started",
+            onboardingAccentLine: "onboardingAccentLine"
         ),
         OnboardingEntity(
-            title: "Choose from\n1000+ styles",
-            subtitle: "Find the perfect look for you",
+            title: "Realistic \nmetals \nand sizes",
+            titleAccent: nil,
+            subtitle: "Curated 3D models, accurate \ndiameters and gauges. Fine-tune \nin a tap.",
             imageName: "secondOnboardingImage",
-            buttonTitle: "Continue"
+            buttonTitle: "Continue",
+            onboardingAccentLine: nil,
         ),
         OnboardingEntity(
-            title: "Share with\nfriends",
-            subtitle: "Get opinions before you commit",
+            title: "No sign-up. \nNo ads.",
+            titleAccent: nil,
+            subtitle: "Pick Ear or Nose, add a photo. \nSave 1080p for free.",
             imageName: "thirdOnboardingImage",
-            buttonTitle: "Let's Go"
+            buttonTitle: "Let's Go",
+            onboardingAccentLine: nil,
         ),
-    ]
-}
+    ]}
 
 extension OnboardingScreenViewModelImpl: OnboardingScreenViewModel {
     func completeOnboarding() async {

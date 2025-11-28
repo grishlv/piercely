@@ -13,7 +13,7 @@ struct MainAppView: View {
             Color.gray.ignoresSafeArea()
             Text("Main App")
                 .font(.largeTitle)
-                .foregroundColor(.white)
+                .foregroundColor(ColorToken.primaryBackground)
         }
     }
 }

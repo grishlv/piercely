@@ -13,7 +13,7 @@ struct OnboardingScreenView<ViewModel: OnboardingScreenViewModel>: View {
     
     var body: some View {
         ZStack {
-            Color(UIColor(red: 31/255, green: 33/255, blue: 37/255, alpha: 1)).ignoresSafeArea()
+            Color(ColorToken.primaryBackground).ignoresSafeArea()
 
             TabView(selection: $viewModel.currentPage) {
                 ForEach(Array(viewModel.pages.enumerated()), id: \.element.id) { index, page in

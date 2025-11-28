@@ -17,56 +17,62 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
-                .frame(height: 120)
+                .frame(height: 70)
             
-            Text(page.title)
-                .font(.system(size: 48, weight: .semibold))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 32)
+            if let accent = page.titleAccent {
+                Text("\(Text(page.title).font(FontToken.headline))\(Text(accent).font(FontToken.headlineAccent))")
+                    .foregroundColor(ColorToken.whiteColor)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+            } else {
+                Text(page.title)
+                    .font(FontToken.headline)
+                    .foregroundColor(ColorToken.whiteColor)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+            }
+            
+            if let lineAccent = page.onboardingAccentLine {
+                Image(lineAccent)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.leading, 16)
+                    .padding(.trailing, 90)
+            }
             
             if !page.subtitle.isEmpty {
                 Text(page.subtitle)
-                    .font(.system(size: 24))
-                    .foregroundColor(
-                        Color(
-                            red: 162 / 255.0,
-                            green: 162 / 255.0,
-                            blue: 162 / 255.0
-                        )
-                    )
+                    .font(FontToken.subtitle)
+                    .foregroundColor(ColorToken.subtitleColor)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, 16)
                     .padding(.top, 16)
             }
-            
-            Spacer()
-            
+                        
             Image(page.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 400)
-                .padding(.horizontal, 32)
-            
-            Spacer()
-            
+                .padding(.horizontal, 16)
+                        
             Button {
                 Task {
                     await viewModel.completeOnboarding()
                 }
             } label: {
                 Text(page.buttonTitle)
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.white)
+                    .font(FontToken.buttonOnboardingTitle)
+                    .foregroundColor(ColorToken.whiteColor)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(Color.blue)
-                    .cornerRadius(28)
+                    .frame(height: 75)
+                    .background(ColorToken.blueButtonColor)
+                    .cornerRadius(50)
             }
-            .padding(.horizontal, 32)
-            .padding(.bottom, 40)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 20)
         }
     }
 }
