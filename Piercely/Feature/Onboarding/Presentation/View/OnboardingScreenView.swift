@@ -27,11 +27,10 @@ struct OnboardingScreenView<ViewModel: OnboardingScreenViewModel>: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             
             VStack {
-                // Индикатор страниц
                 HStack(spacing: 8) {
                     ForEach(0..<viewModel.pages.count, id: \.self) { index in
                         Capsule()
-                            .fill(index == viewModel.currentPage ? Color.white : Color(uiColor: UIColor(red: 64/255, green: 64/255, blue: 64/255, alpha: 1)))
+                            .fill(index == viewModel.currentPage ? ColorToken.whiteColor : ColorToken.secondaryGreyColor)
                             .frame(width: index == viewModel.currentPage ? 110 : 100, height: 3)
                             .animation(.easeInOut, value: viewModel.currentPage)
                     }

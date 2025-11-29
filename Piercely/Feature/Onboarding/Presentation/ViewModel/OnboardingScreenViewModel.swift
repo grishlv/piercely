@@ -51,7 +51,8 @@ final class OnboardingScreenViewModelImpl {
             buttonTitle: "Let's Go",
             onboardingAccentLine: nil,
         ),
-    ]}
+    ]
+}
 
 extension OnboardingScreenViewModelImpl: OnboardingScreenViewModel {
     func completeOnboarding() async {

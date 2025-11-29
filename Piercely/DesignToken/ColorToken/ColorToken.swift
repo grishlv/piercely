@@ -12,4 +12,5 @@ enum ColorToken {
     static let whiteColor = Color(hex: "#FFFFFF")
     static let subtitleColor = Color(hex: "#A2A2A2")
     static let blueButtonColor = Color(hex: "#3072DF")
+    static let secondaryGreyColor = Color(hex: "#404040")
 }

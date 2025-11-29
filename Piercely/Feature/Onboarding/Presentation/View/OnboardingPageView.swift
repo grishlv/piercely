@@ -72,7 +72,6 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
                     .cornerRadius(50)
             }
             .padding(.horizontal, 16)
-            .padding(.bottom, 20)
         }
     }
 }

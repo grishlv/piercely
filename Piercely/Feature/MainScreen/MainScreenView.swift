@@ -10,7 +10,7 @@ import SwiftUI
 struct MainAppView: View {
     var body: some View {
         ZStack {
-            Color.gray.ignoresSafeArea()
+            ColorToken.primaryBackground.ignoresSafeArea()
             Text("Main App")
                 .font(.largeTitle)
                 .foregroundColor(ColorToken.primaryBackground)
