@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "0.2",
+	"bspVersion": "2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/grigoriishiliaev/piercely/Piercely.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/grigoriishiliaev/Library/Developer/Xcode/DerivedData/Piercely-ehqaxwrahzpjuvbrkojuqzisyian",
+	"scheme": "Piercely",
+	"kind": "xcode"
+}
