@@ -18,7 +18,6 @@ protocol OnboardingScreenViewModel: ObservableObject {
     func skipToEnd()
 }
 
-@MainActor
 final class OnboardingScreenViewModelImpl {
     @Published
     var currentPage = 0
