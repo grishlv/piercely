@@ -12,4 +12,5 @@ enum FontToken {
     static let headlineAccent = Font.custom("ShadowsIntoLight", size: 56)
     static let subtitle = Font.custom("SF-Pro", size: 22)
     static let buttonOnboardingTitle = Font.custom("SF-Pro", size: 22)
+    static let buttonMainScreenTitle = Font.custom("SF-Pro", size: 22)
 }
