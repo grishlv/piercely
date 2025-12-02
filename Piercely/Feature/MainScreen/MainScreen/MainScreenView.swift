@@ -16,8 +16,6 @@ struct MainAppView: View {
                 
                 TryOnCardView(viewModel: viewModel.tryOnCardViewModel)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
         }
         .background(ColorToken.primaryBackground.ignoresSafeArea())
     }

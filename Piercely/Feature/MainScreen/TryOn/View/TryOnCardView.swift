@@ -14,23 +14,36 @@ struct TryOnCardView<ViewModel: TryOnCardViewModel>: View {
     
     var body: some View {
         let tryOnCardEntity = viewModel.tryOnCard
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 16) {
+        ZStack(alignment: .leading) {
+            Image("tryOnBackground")
+                .resizable()
+                .aspectRatio(360/230, contentMode: .fit)
+                .clipped()
+            
+            VStack(alignment: .leading, spacing: 18) {
                 Text(tryOnCardEntity.title)
-                    .font(FontToken.subtitle)
+                    .font(FontToken.titleMainScreen)
                     .foregroundColor(ColorToken.whiteColor)
                     .multilineTextAlignment(.leading)
-                VStack(spacing: 8) {
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.bottom, 6)
+                VStack(spacing: 12) {
                     Button {
                         viewModel.uploadPhoto()
                     } label: {
-                        Image(tryOnCardEntity.uploadPhotoImage)
-                            .resizable()
-
-                        Text(tryOnCardEntity.uploadPhotoTitle.uppercased())
-                            .font(FontToken.buttonOnboardingTitle)
-                            .frame(maxWidth: .infinity, minHeight: 48)
+                        HStack(spacing: 6) {
+                            Image(tryOnCardEntity.uploadPhotoImage)
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                            
+                            Text(tryOnCardEntity.uploadPhotoTitle.uppercased())
+                                .font(FontToken.buttonMainScreenTitle)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48)
                     }
+                    .frame(width: 140, height: 40)
                     .background(ColorToken.blueButtonColor) // make a gradient color
                     .foregroundColor(ColorToken.whiteColor)
                     .cornerRadius(50)
@@ -38,30 +51,27 @@ struct TryOnCardView<ViewModel: TryOnCardViewModel>: View {
                     Button {
                         viewModel.takePhoto()
                     } label: {
-                        Image(tryOnCardEntity.takePhotoImage)
-                            .resizable()
-
-                        Text(tryOnCardEntity.takePhotoTitle.uppercased())
-                            .font(FontToken.buttonOnboardingTitle)
-                            .frame(maxWidth: .infinity, minHeight: 48)
+                        HStack(spacing: 6) {
+                            Image(tryOnCardEntity.takePhotoImage)
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                            
+                            Text(tryOnCardEntity.takePhotoTitle.uppercased())
+                                .font(FontToken.buttonMainScreenTitle)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48)
                     }
+                    .frame(width: 140, height: 40)
                     .background(ColorToken.whiteColor)
                     .foregroundColor(ColorToken.secondaryGreyColor)
                     .cornerRadius(50)
                 }
             }
-            Spacer(minLength: 0)
-            
-            Image(tryOnCardEntity.image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 140, height: 160)
-                .clipped()
-                .cornerRadius(24)
+            .padding(.leading, 24)
+            .padding(.vertical, 24)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(16)
-        .background(ColorToken.secondaryGreyColor.ignoresSafeArea())
-        .frame(width: 360, height: 230)
-        .cornerRadius(25)
+        .padding(.horizontal, 16)
     }
 }
