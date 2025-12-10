@@ -12,8 +12,8 @@ import Combine
 protocol OnboardingScreenViewModel: ObservableObject {
     var currentPage: Int { get set }
     var pages: [OnboardingEntity] { get set }
-    var shouldShowMainApp: Bool { get set }
-    func completeOnboarding () async
+    
+    func completeOnboarding() async
     func nextPage()
     func skipToEnd()
 }
@@ -22,8 +22,6 @@ final class OnboardingScreenViewModelImpl {
     @Published
     var currentPage = 0
     
-    @Published
-    var shouldShowMainApp = false
     private weak var coordinator: AppCoordinator?
     
     var pages: [OnboardingEntity] = [
