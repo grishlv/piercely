@@ -24,6 +24,7 @@ final class OnboardingScreenViewModelImpl {
     
     @Published
     var shouldShowMainApp = false
+    private weak var coordinator: AppCoordinator?
     
     var pages: [OnboardingEntity] = [
         OnboardingEntity(
@@ -51,12 +52,15 @@ final class OnboardingScreenViewModelImpl {
             onboardingAccentLine: nil,
         ),
     ]
+    
+    init(coordinator: AppCoordinator) {
+        self.coordinator = coordinator
+    }
 }
 
 extension OnboardingScreenViewModelImpl: OnboardingScreenViewModel {
     func completeOnboarding() async {
-        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-        shouldShowMainApp = true
+        coordinator?.completeOnboarding()
     }
     
     func nextPage() {

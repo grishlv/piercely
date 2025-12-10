@@ -40,8 +40,5 @@ struct OnboardingScreenView<ViewModel: OnboardingScreenViewModel>: View {
                 Spacer()
             }
         }
-        .fullScreenCover(isPresented: $viewModel.shouldShowMainApp) {
-            MainAppView()
-        }
     }
 }

@@ -8,10 +8,15 @@
 import Foundation
 
 final class OnboardingScreenFactory {
+    private let coordinator: AppCoordinator
+    
+    init(coordinator: AppCoordinator) {
+        self.coordinator = coordinator
+    }
 }
 
 extension OnboardingScreenFactory {
     func makeOnboardingScreenViewModel() -> OnboardingScreenViewModelImpl {
-        OnboardingScreenViewModelImpl()
+        OnboardingScreenViewModelImpl(coordinator: coordinator)
     }
 }

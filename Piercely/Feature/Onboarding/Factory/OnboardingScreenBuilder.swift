@@ -12,7 +12,7 @@ final class OnboardingScreenBuilder {
     private let screenFactory: OnboardingScreenFactory
     
     // MARK: Life cycle
-    init(screenFactory: OnboardingScreenFactory = OnboardingScreenFactory()) {
+    init(screenFactory: OnboardingScreenFactory) {
         self.screenFactory = screenFactory
     }
 }
