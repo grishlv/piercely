@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct PiercelyApp: App {
-    private let onboardingBuilder = OnboardingScreenBuilder()
-    
+    @StateObject
+    private var appCoordinator = AppCoordinator()
+
     var body: some Scene {
         WindowGroup {
-            onboardingBuilder.buildView()
+            AppCoordinatorView(coordinator: appCoordinator)
         }
     }
 }
