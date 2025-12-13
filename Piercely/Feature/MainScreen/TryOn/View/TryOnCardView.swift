@@ -20,16 +20,16 @@ struct TryOnCardView<ViewModel: TryOnCardViewModel>: View {
                 .aspectRatio(360/230, contentMode: .fit)
                 .clipped()
             
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading) {
                 Text(tryOnCardEntity.title)
                     .font(FontToken.titleMainScreen)
                     .foregroundColor(ColorToken.whiteColor)
                     .multilineTextAlignment(.leading)
                     .lineLimit(3)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.bottom, 6)
+                    .padding(.bottom, 20)
                 VStack(spacing: 12) {
-                    Button {
+                    Button { 
                         viewModel.uploadPhoto()
                     } label: {
                         HStack(spacing: 6) {
@@ -41,7 +41,6 @@ struct TryOnCardView<ViewModel: TryOnCardViewModel>: View {
                                 .font(FontToken.buttonMainScreenTitle)
                         }
                         .frame(maxWidth: .infinity)
-                        .frame(height: 48)
                     }
                     .frame(width: 140, height: 40)
                     .background(ColorToken.blueButtonColor) // make a gradient color
@@ -60,7 +59,6 @@ struct TryOnCardView<ViewModel: TryOnCardViewModel>: View {
                                 .font(FontToken.buttonMainScreenTitle)
                         }
                         .frame(maxWidth: .infinity)
-                        .frame(height: 48)
                     }
                     .frame(width: 140, height: 40)
                     .background(ColorToken.whiteColor)
@@ -68,8 +66,7 @@ struct TryOnCardView<ViewModel: TryOnCardViewModel>: View {
                     .cornerRadius(50)
                 }
             }
-            .padding(.leading, 24)
-            .padding(.vertical, 24)
+            .padding(.leading, 18)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, 16)

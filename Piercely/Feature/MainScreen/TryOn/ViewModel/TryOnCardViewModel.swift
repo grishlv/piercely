@@ -19,7 +19,7 @@ final class TryOnCardViewModelImpl: ObservableObject {
     private let onTakePhoto: () -> Void
     
     var tryOnCard: TryOnEntity = .init(
-        title: "See exactly how your \ndream piercing looks \non you",
+        title: "See exactly how \nyour dream piercing \nlooks on you",
         uploadPhotoTitle: "Upload Photo",
         uploadPhotoImage: "magicStars",
         takePhotoTitle: "Take Photo",

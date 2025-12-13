@@ -25,6 +25,7 @@ struct OnboardingScreenView<ViewModel: OnboardingScreenViewModel>: View {
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            .animation(.easeInOut(duration: 0.5), value: viewModel.currentPage)
             
             VStack {
                 HStack(spacing: 8) {

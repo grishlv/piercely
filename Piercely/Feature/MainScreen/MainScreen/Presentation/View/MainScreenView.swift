@@ -18,10 +18,10 @@ struct MainScreenView<ViewModel: MainScreenViewModel>: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack() {
                 TryOnCardView(viewModel: viewModel.tryOnCardViewModel)
             }
-            .padding()
+            .padding(.top, 20)
         }
         .background(ColorToken.primaryBackground.ignoresSafeArea())
         .photosPicker(
