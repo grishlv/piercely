@@ -60,7 +60,11 @@ struct OnboardingPageView<ViewModel: OnboardingScreenViewModel>: View {
                         
             Button {
                 Task {
-                    await viewModel.completeOnboarding()
+                    if viewModel.currentPage == viewModel.pages.count - 1 {
+                        await viewModel.completeOnboarding()
+                    } else {
+                        viewModel.nextPage()
+                    }
                 }
             } label: {
                 Text(page.buttonTitle)
