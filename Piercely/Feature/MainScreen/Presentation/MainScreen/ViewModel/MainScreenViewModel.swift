@@ -8,26 +8,32 @@
 import Combine
 import SwiftUI
 import PhotosUI
+import AVFoundation
 
 @MainActor
 protocol MainScreenViewModel: ObservableObject {
     var selectedPhotoItem: PhotosPickerItem? { get set }
     var isPhotoPickerPresented: Bool { get set }
     var isCameraPresented: Bool { get set }
+    var isLoading: Bool { get set }
+    var isCameraPermissionAlertPresented: Bool { get set }
     var tryOnCardViewModel: TryOnCardViewModelImpl { get }
     
     func handlePhotoItemSelected(_ item: PhotosPickerItem?) async
     func handleImageSelected(_ image: UIImage)
+    func requestOpenCamera()
 }
 
 final class MainScreenViewModelImpl: MainScreenViewModel {
     @Published var selectedPhotoItem: PhotosPickerItem?
+    @Published var selectedImage: UIImage?
     @Published var isPhotoPickerPresented = false
     @Published var isCameraPresented = false
-    @Published var selectedImage: UIImage?
+    @Published var isCameraPermissionAlertPresented = false
+    @Published var isLoading = false
     
     private weak var coordinator: AppCoordinator?
-    
+        
     lazy var tryOnCardViewModel: TryOnCardViewModelImpl = {
         TryOnCardViewModelImpl(
             onUploadPhoto: { [weak self] in
@@ -36,7 +42,7 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
             },
             onTakePhoto: { [weak self] in
                 guard let self else { return }
-                self.isCameraPresented = true
+                self.requestOpenCamera()
             }
         )
     }()
@@ -47,32 +53,69 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
 }
 
 extension MainScreenViewModelImpl {
+    @MainActor
     func handlePhotoItemSelected(_ item: PhotosPickerItem?) async {
         guard let item else { return }
+                   
+        isLoading = true
         
-        defer {
-            self.selectedPhotoItem = nil
-            self.isPhotoPickerPresented = false
-        }
-        
-        Task {
-            do {
-                guard let data = try await item.loadTransferable(type: Data.self),
-                      let image = UIImage(data: data) else {
-                    return
-                }
+        do {
+            if let data = try await item.loadTransferable(type: Data.self),
+               let image = UIImage(data: data) {
                 
-                handleImageSelected(image)
-            } catch {
-                print("❌ Failed to load image from PhotosPickerItem: \(error)")
+                self.selectedPhotoItem = nil
+                
+                await proceedToPreview(with: image)
+            } else {
+                print("❌ Failed to decode image from data")
+                isLoading = false
+                self.selectedPhotoItem = nil
             }
+        } catch {
+            print("❌ Failed to load image: \(error)")
+            isLoading = false
+            self.selectedPhotoItem = nil
         }
     }
     
     func handleImageSelected(_ image: UIImage) {
-        selectedImage = image
-        print("✅ Image selected: \(image.size)")
+        Task { @MainActor in
+            isLoading = true
+            
+            await proceedToPreview(with: image)
+        }
+    }
+    
+    @MainActor
+    private func proceedToPreview(with image: UIImage) async {
+        try? await Task.sleep(nanoseconds: 600_000_000)
         
+        isLoading = false
         coordinator?.navigateToPhotoPreview(image: image)
+    }
+    
+    func requestOpenCamera() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            isCameraPresented = true
+
+        case .notDetermined:
+            Task {
+                let granted = await AVCaptureDevice.requestAccess(for: .video)
+                await MainActor.run {
+                    if granted {
+                        self.isCameraPresented = true
+                    } else {
+                        self.isCameraPermissionAlertPresented = true
+                    }
+                }
+            }
+
+        case .denied, .restricted:
+            isCameraPermissionAlertPresented = true
+
+        @unknown default:
+            isCameraPermissionAlertPresented = true
+        }
     }
 }
