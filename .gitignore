@@ -1,0 +1,14 @@
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+# Xcode build artifacts
+build/
+DerivedData/
+
+# Xcode user state
+*.xcuserstate
+**/xcuserdata/
+
+# Xcode workspace user checkout
+*.xccheckout
