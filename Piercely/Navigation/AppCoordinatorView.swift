@@ -17,9 +17,9 @@ struct AppCoordinatorView: View {
             } else {
                 NavigationStack(path: $coordinator.navigationPath) {
                     makeMainScreen().buildView()
-//                        .navigationDestination(for: NavigationDestination.self) { destination in
-//                            destinationView(for: destination)
-//                        }
+                        .navigationDestination(for: NavigationDestination.self) { destination in
+                            destinationView(for: destination)
+                        }
                 }
             }
         }
@@ -27,9 +27,19 @@ struct AppCoordinatorView: View {
 }
 
 private extension AppCoordinatorView {
-//    @ViewBuilder
-//    func destinationView(for destination: NavigationDestination) -> some View? {
-//    }
+    @ViewBuilder
+    func destinationView(for destination: NavigationDestination) -> some View {
+        switch destination {
+        case .photoPreview:
+            if let image = coordinator.photoPreviewImage {
+                let builder = makePhotoHandlerScreen(image: image)
+                
+                builder.buildView()
+            } else {
+                EmptyView()
+            }
+        }
+    }
 }
 
 // MARK: - Onboarding Screen
@@ -43,5 +53,17 @@ private extension AppCoordinatorView {
 private extension AppCoordinatorView {
     func makeMainScreen() -> MainScreenBuilder {
         MainScreenBuilder(screenFactory: .init(coordinator: coordinator))
+    }
+}
+
+// MARK: - Photo Handler Screen
+private extension AppCoordinatorView {
+    func makePhotoHandlerScreen(image: UIImage) -> PhotoHandlerScreenBuilder {
+        PhotoHandlerScreenBuilder(
+            screenFactory: .init(
+                coordinator: coordinator,
+                image: image
+            )
+        )
     }
 }

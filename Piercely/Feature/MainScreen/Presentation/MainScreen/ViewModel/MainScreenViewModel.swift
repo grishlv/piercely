@@ -16,6 +16,7 @@ protocol MainScreenViewModel: ObservableObject {
     var isCameraPresented: Bool { get set }
     var tryOnCardViewModel: TryOnCardViewModelImpl { get }
     
+    func handlePhotoItemSelected(_ item: PhotosPickerItem?) async
     func handleImageSelected(_ image: UIImage)
 }
 
@@ -43,9 +44,35 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
     init(coordinator: AppCoordinator) {
         self.coordinator = coordinator
     }
+}
+
+extension MainScreenViewModelImpl {
+    func handlePhotoItemSelected(_ item: PhotosPickerItem?) async {
+        guard let item else { return }
+        
+        defer {
+            self.selectedPhotoItem = nil
+            self.isPhotoPickerPresented = false
+        }
+        
+        Task {
+            do {
+                guard let data = try await item.loadTransferable(type: Data.self),
+                      let image = UIImage(data: data) else {
+                    return
+                }
+                
+                handleImageSelected(image)
+            } catch {
+                print("❌ Failed to load image from PhotosPickerItem: \(error)")
+            }
+        }
+    }
     
     func handleImageSelected(_ image: UIImage) {
         selectedImage = image
         print("✅ Image selected: \(image.size)")
+        
+        coordinator?.navigateToPhotoPreview(image: image)
     }
 }
