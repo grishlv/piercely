@@ -29,20 +29,14 @@ struct MainScreenView<ViewModel: MainScreenViewModel>: View {
             selection: $viewModel.selectedPhotoItem,
             matching: .images
         )
-        .sheet(isPresented: $viewModel.isCameraPresented) {
-            ImagePicker(
-                sourceType: .camera,
-                selectedImage: { image in
-                    viewModel.handleImageSelected(image)
-                }
-            )
-        }
-        .onChange(of: viewModel.selectedPhotoItem) { newItem in
+        .onChange(of: viewModel.selectedPhotoItem) { newItem, _ in
             Task {
-                if let data = try? await newItem?.loadTransferable(type: Data.self),
-                   let image = UIImage(data: data) {
-                    viewModel.handleImageSelected(image)
-                }
+                await viewModel.handlePhotoItemSelected(newItem)
+            }
+        }
+        .sheet(isPresented: $viewModel.isCameraPresented) {
+            CameraPickerView { image in
+                viewModel.handleImageSelected(image)
             }
         }
     }
