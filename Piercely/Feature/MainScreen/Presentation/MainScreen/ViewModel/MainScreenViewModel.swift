@@ -21,7 +21,6 @@ protocol MainScreenViewModel: ObservableObject {
     
     func handlePhotoItemSelected(_ item: PhotosPickerItem?) async
     func handleImageSelected(_ image: UIImage)
-    func requestOpenCamera()
 }
 
 final class MainScreenViewModelImpl: MainScreenViewModel {
@@ -42,7 +41,7 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
             },
             onTakePhoto: { [weak self] in
                 guard let self else { return }
-                self.requestOpenCamera()
+                self.isCameraPresented = true
             }
         )
     }()
@@ -53,57 +52,64 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
 }
 
 extension MainScreenViewModelImpl {
-    @MainActor
     func handlePhotoItemSelected(_ item: PhotosPickerItem?) async {
         guard let item else { return }
-                   
-        isLoading = true
         
-        do {
-            if let data = try await item.loadTransferable(type: Data.self),
-               let image = UIImage(data: data) {
-                
-                self.selectedPhotoItem = nil
-                
-                await proceedToPreview(with: image)
-            } else {
-                print("❌ Failed to decode image from data")
-                isLoading = false
-                self.selectedPhotoItem = nil
+        isLoading = true  // show loading indicator
+        
+        // Load the selected photo in the background
+        Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else { return }
+            do {
+                // Fetch image data (this may download from iCloud if needed)
+                if let data = try await item.loadTransferable(type: Data.self),
+                   let image = UIImage(data: data) {
+                    // Switch back to the main thread to update UI
+                    await MainActor.run {
+                        self.isLoading = false
+                        self.selectedPhotoItem = nil
+                        self.coordinator?.navigateToPhotoPreview(image: image)
+                    }
+                } else {
+                    // No data or failed to create image
+                    await MainActor.run {
+                        self.isLoading = false
+                        self.selectedPhotoItem = nil
+                    }
+                }
+            } catch {
+                // Handle errors (e.g., cancellation or load failure)
+                await MainActor.run {
+                    self.isLoading = false
+                    self.selectedPhotoItem = nil
+                }
             }
-        } catch {
-            print("❌ Failed to load image: \(error)")
-            isLoading = false
-            self.selectedPhotoItem = nil
         }
     }
     
     func handleImageSelected(_ image: UIImage) {
-        Task { @MainActor in
-            isLoading = true
-            
-            await proceedToPreview(with: image)
-        }
+        self.coordinator?.navigateToPhotoPreview(image: image)
     }
-    
-    @MainActor
-    private func proceedToPreview(with image: UIImage) async {
-        try? await Task.sleep(nanoseconds: 600_000_000)
-        
-        isLoading = false
-        coordinator?.navigateToPhotoPreview(image: image)
-    }
-    
+}
+
+private extension MainScreenViewModelImpl {
     func requestOpenCamera() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            isCameraPresented = true
-
+            isLoading = true
+            
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 50_000_000)
+                self.isCameraPresented = true
+            }
+            
         case .notDetermined:
-            Task {
-                let granted = await AVCaptureDevice.requestAccess(for: .video)
-                await MainActor.run {
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                Task { @MainActor in
+                    guard let self else { return }
                     if granted {
+                        self.isLoading = true
+                        try? await Task.sleep(nanoseconds: 50_000_000)
                         self.isCameraPresented = true
                     } else {
                         self.isCameraPermissionAlertPresented = true

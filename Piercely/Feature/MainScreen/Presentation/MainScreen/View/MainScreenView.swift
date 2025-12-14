@@ -50,10 +50,12 @@ struct MainScreenView<ViewModel: MainScreenViewModel>: View {
         .sheet(isPresented: $viewModel.isCameraPresented) {
             CameraPickerView(
                 onImageCaptured: { image in
+                    viewModel.isLoading = false
                     viewModel.isCameraPresented = false
                     viewModel.handleImageSelected(image)
                 },
                 onCancel: {
+                    viewModel.isLoading = false
                     viewModel.isCameraPresented = false
                 }
             )
