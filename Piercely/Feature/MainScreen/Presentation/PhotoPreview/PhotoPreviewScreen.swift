@@ -14,18 +14,16 @@ struct PhotoPreviewScreen<ViewModel: PhotoPreviewViewModel>: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                Image(uiImage: viewModel.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                ZoomableImage(image: viewModel.image, minScale: 1, maxScale: 6)
                     .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.9)
                     .background(Color.black)
-                
-                VStack {
-                    // TODO: Horizontal scroll bar with editing tools
-                    Text("Editor Toolbar Placeholder")
-                        .foregroundColor(.gray)
-                        .font(.caption)
-                }
+
+                EditorToolbar(
+                    selectedTool: $viewModel.selectedTool,
+                    onToolSelected: { tool in
+                        viewModel.applyTool(tool)
+                    }
+                )
                 .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.1)
                 .background(ColorToken.primaryBackground)
             }
