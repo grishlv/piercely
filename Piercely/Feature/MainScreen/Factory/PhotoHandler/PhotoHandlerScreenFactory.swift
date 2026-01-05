@@ -23,9 +23,7 @@ final class PhotoHandlerScreenFactory {
 extension PhotoHandlerScreenFactory {
     func makePhotoPreviewViewModel() -> PhotoPreviewViewModelImpl {
         PhotoPreviewViewModelImpl(
-            coordinator: coordinator,
             image: image,
         )
     }
 }
-

@@ -55,13 +55,13 @@ extension MainScreenViewModelImpl {
     func handlePhotoItemSelected(_ item: PhotosPickerItem?) async {
         guard let item else { return }
         
-        isLoading = true  // show loading indicator
+        isLoading = true
         
         // Load the selected photo in the background
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else { return }
             do {
-                // Fetch image data (this may download from iCloud if needed)
+                // Fetch image data
                 if let data = try await item.loadTransferable(type: Data.self),
                    let image = UIImage(data: data) {
                     // Switch back to the main thread to update UI
@@ -78,7 +78,6 @@ extension MainScreenViewModelImpl {
                     }
                 }
             } catch {
-                // Handle errors (e.g., cancellation or load failure)
                 await MainActor.run {
                     self.isLoading = false
                     self.selectedPhotoItem = nil

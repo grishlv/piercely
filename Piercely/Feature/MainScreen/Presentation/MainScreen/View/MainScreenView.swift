@@ -41,7 +41,7 @@ struct MainScreenView<ViewModel: MainScreenViewModel>: View {
             matching: .images,
             photoLibrary: .shared()
         )
-        .onChange(of: viewModel.selectedPhotoItem) { oldValue, newValue in
+        .onChange(of: viewModel.selectedPhotoItem) { _, newValue in
             Task {
                 await viewModel.handlePhotoItemSelected(newValue)
             }
